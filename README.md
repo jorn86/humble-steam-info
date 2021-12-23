@@ -22,10 +22,4 @@ in the extension itself (avoiding CORS errors and other roadblocks), I'll happil
 
 Do you like this extension? You can buy me a cup of coffee, or help pay for the Google Cloud hosting!
 
-<form action="https://www.paypal.com/donate" method="post" target="_top">
-    <input type="hidden" name="business" value="SSLTV6CL5Q56A" />
-    <input type="hidden" name="no_recurring" value="1" />
-    <input type="hidden" name="currency_code" value="EUR" />
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-    <img alt="" border="0" src="https://www.paypal.com/en_NL/i/scr/pixel.gif" width="1" height="1" />
-</form>
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?business=SSLTV6CL5Q56A&no_recurring=1&currency_code=EUR)
