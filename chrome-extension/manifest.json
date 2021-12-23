@@ -1,0 +1,14 @@
+{
+  "name": "Humble Bundle Steam details",
+  "description": "Adds steam price and link to all Humble bundle entries",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "content_scripts": [{
+    "matches": ["https://*.humblebundle.com/games/*"],
+    "run_at": "document_idle",
+    "js": ["steam.js"],
+    "css": ["steam.css"]
+  }],
+  "host_permissions": ["https://europe-west3-hertsig-hosting.cloudfunctions.net/*"],
+  "permissions": ["scripting"]
+}
