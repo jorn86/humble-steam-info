@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +34,8 @@ public class GetSteamInfo implements HttpFunction {
     private static final Client CLIENT = JerseyClientBuilder.newBuilder()
             .build();
     private static final LoadingCache<String, Map<String, String>> CACHE = CacheBuilder.newBuilder()
+            .expireAfterWrite(24, TimeUnit.HOURS)
+            .maximumSize(1000)
             .build(new Loader());
     private static final Set<String> EXCLUDES = Set.of("vol");
 
