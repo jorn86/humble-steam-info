@@ -1,5 +1,8 @@
 # Humble Bundle Steam info extension
 This Chrome extension adds Steam details to the Humble Bundle overviews.
+I want to add it to the Chrome Web store, but since Google only accepts credit cards to open an account
+(while they can do direct debit for the Google Cloud account), that's not going to happen soon.
+In the meantime, you can install the extension by following [these instructions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#manifest). 
 
 ## Before
 ![Before](before.png)
