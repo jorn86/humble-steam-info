@@ -6,9 +6,15 @@
   "content_scripts": [{
     "matches": ["https://*.humblebundle.com/games/*"],
     "run_at": "document_idle",
-    "js": ["steam.js"],
-    "css": ["steam.css"]
+    "js": ["humble.js"],
+    "css": ["humble.css"]
+  }, {
+    "matches": ["https://store.steampowered.com/search/*"],
+    "run_at": "document_idle",
+    "js": ["steam.js"]
   }],
-  "host_permissions": ["https://europe-west3-hertsig-hosting.cloudfunctions.net/*"],
-  "permissions": ["scripting"]
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["scripting", "tabs"]
 }

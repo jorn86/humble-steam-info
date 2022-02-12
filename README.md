@@ -18,10 +18,10 @@ When the extension isn't sure if it's found the correct game, it'll add the name
 so you can easily see if the displayed information is correct. It'll link to the Steam Search page in that case,
 so you should be able to find the correct page yourself easily.
 
-The extension calls a [Google Cloud function](cloud-function) to resolve the Steam data.
-This means any localization info is lost, and you'll get US-based results.
-There's not much I can do about this, but if you can find a way to load and parse the Steam page from the browser
-in the extension itself (avoiding CORS errors and other roadblocks), I'll happily accept a pull request.
+The extension opens Steam in tabs in the current window to find the information. Chrome doesn't allow me to hide those tabs,
+so you may see them open up briefly while results are loaded. The advantage is that if you are logged into Steam,
+all information is resolved using your profile, including localized prices, discounts and whether or not you already 
+own the game. That information is added when available.
 
 Do you like this extension? You can buy me a cup of coffee, or help pay for the Google Cloud hosting!
 

@@ -1,70 +1,59 @@
 (async () => {
-    for (let element of document.querySelectorAll("div.tier-item-view")) {
-        let nameElement = element.querySelector("span.item-title")
-        if (nameElement == null) {
-            console.log("Couldn't locate name element for " + element)
-            continue
-        }
+    chrome.runtime.sendMessage({ type: "is_registered_tab" }, function(response) {
+        if (!response) return
 
-        let flavorElement = element.querySelector("span.item-flavor-text");
-        if (flavorElement == null || flavorElement.textContent === "Comic") {
-            continue
-        }
-
-        let url = new URL("https://europe-west3-hertsig-hosting.cloudfunctions.net/humble-steam-id")
-        let expectedName = nameElement.textContent;
-        url.searchParams.append("name", expectedName)
-        await fetch(url)
-            .then(r => r.json())
-            .then(data => {
-                if (!data.url) return
-
-                if (expectedName !== data.title) {
-                    element.appendChild(el("a", name => {
-                        name.className = "steam-name"
-                        name.href = "https://store.steampowered.com/search?term=" + encodeURIComponent(expectedName)
-                        name.target = "blank"
-                        name.innerHTML = data.title
-                    }))
-                }
-
-                element.appendChild(el("a", steam => {
-                    steam.className = "steam"
-                    steam.href = data.url
-                    steam.target = "blank"
-
-                    if (data.discount !== "") {
-                        steam.appendChild(el("div", discount => {
-                            discount.className = "steam-discount"
-                            discount.innerHTML = data.discount
-                        }))
-                    }
-
-                    steam.appendChild(el("div", price => {
-                        price.className = "steam-price"
-                        if (data.originalPriceDisplay) {
-                            price.appendChild(el("div", original => {
-                                original.className = "steam-price-original"
-                                original.innerHTML = data.originalPriceDisplay
-                            }))
-                        }
-                        price.appendChild(el("div", current => {
-                            current.className = "steam-price-current"
-                            if (data.priceDisplay !== "") {
-                                current.innerHTML = data.priceDisplay
-                            } else {
-                                current.innerHTML = "Not released yet"
-                            }
-                        }))
-                    }))
-                }))
-            })
-            .catch(e => console.log("Catch / Request failed: " + e))
-    }
+        chrome.runtime.sendMessage({ type: "search_result", data: search(response.name) }, function(response) {
+            console.log("Closing")
+            window.close()
+        })
+    })
 })()
 
-function el(tagName, init) {
-    let element = document.createElement(tagName)
-    init(element)
-    return element
+function search(name) {
+    console.log("Searching",name)
+    let elements = Array.from(document.getElementsByClassName("search_result_row"))
+    elements.sort((a, b) => score(name, b) - score(name, a))
+    let element = elements[0]
+
+    if (!element) {
+        console.log("No results for", name)
+        return {}
+    }
+
+    let titleElement = element.getElementsByClassName("title")[0]
+    let priceElement = element.getElementsByClassName("search_price")[0]
+    let originalPriceElement = element.getElementsByTagName("strike")[0]
+    let discountElement = element.getElementsByClassName("search_price_discount_combined")[0]
+    let owned = element.getElementsByClassName("ds_owned_flag").length > 0
+
+    return {
+        title: titleElement.textContent.trim(),
+        url: element.getAttribute("href"),
+        priceDisplay: priceElement.textContent.trim(),
+        originalPriceDisplay: originalPriceElement ? originalPriceElement.textContent : "",
+        discount: discountElement.getElementsByClassName("search_discount").textContent,
+        owned: owned,
+    }
+}
+
+function score(name, element) {
+    let actualName = element.getElementsByClassName("title")[0].textContent
+    if (actualName === name) {
+        return 99
+    }
+    let words = keywords(name)
+    let actualWords = keywords(actualName)
+    let same = words.filter(it => actualWords.includes(it))
+
+    if (words.length == same.length && actualWords.length == same.length) {
+        return 98
+    }
+    return same.length
+}
+
+function keywords(name) {
+    return name.toLowerCase().split(/[\s.,/&()\[\]_\-:;]+/)
+        .map(it => it.trim())
+        .filter(it => it.length > 1)
+        .filter(it => it !== "vol")
 }
