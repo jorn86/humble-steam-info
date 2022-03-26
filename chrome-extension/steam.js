@@ -10,18 +10,19 @@
 })()
 
 function search(name) {
-    console.log("Searching",name)
     let elements = Array.from(document.getElementsByClassName("search_result_row"))
     elements.sort((a, b) => score(name, b) - score(name, a))
     let element = elements[0]
 
-    if (!element) {
+    if (!element || score(name, element) == 0) {
         console.log("No results for", name)
         return {}
     }
 
     let titleElement = element.getElementsByClassName("title")[0]
     let priceElement = element.getElementsByClassName("search_price")[0]
+    let priceElementNodes = priceElement.childNodes
+    let price = priceElementNodes[priceElementNodes.length - 1].textContent.trim()
     let originalPriceElement = element.getElementsByTagName("strike")[0]
     let discountElement = element.getElementsByClassName("search_price_discount_combined")[0]
     let owned = element.getElementsByClassName("ds_owned_flag").length > 0
@@ -29,7 +30,7 @@ function search(name) {
     return {
         title: titleElement.textContent.trim(),
         url: element.getAttribute("href"),
-        priceDisplay: priceElement.textContent.trim(),
+        priceDisplay: price,
         originalPriceDisplay: originalPriceElement ? originalPriceElement.textContent : "",
         discount: discountElement.getElementsByClassName("search_discount").textContent,
         owned: owned,

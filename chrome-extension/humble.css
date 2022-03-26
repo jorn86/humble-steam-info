@@ -1,54 +1,61 @@
-.steam-name {
-    font-size: 11px;
-    color: #626366;
-}
-
 .steam {
-    height: 32px;
-    display: inline-block;
-    margin-left: 2px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
     vertical-align: middle;
     position: relative;
+    font-size: 14px;
+    color: #c7d5e0;
     background-color: black;
-    padding: 2px 2px 2px 0;
-    border-radius: 2px;
+    margin: 4px 0;
+    padding: 2px;
+    border-radius: 4px;
     overflow: hidden;
     text-decoration: none;
 }
 
+.steam-name {
+    display: flex;
+    font-size: 14px;
+    margin: 2px;
+    color: #c7d5e0;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.steam-price-row {
+    display: flex;
+    /* Use row-reverse to make the price 
+       align right when there's no discount */
+    flex-flow: row-reverse nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .steam-discount {
-    height: 32px;
-    line-height: 32px;
-    font-size: 25px;
-    display: inline-block;
-    margin-left: 2px;
-    vertical-align: middle;
-    padding: 0 6px;
+    display: flex;
+    font-size: 14px;
     color: #a4d007;
     background: #4c6b22;
-    float: left;
+    border-radius: 2px;
 }
 
 .steam-price {
-    vertical-align: top;
+    display: flex;
     background: black;
-    overflow: hidden;
 }
 
 .steam-price-original {
-    position: absolute;
-    left: auto;
-    right: 6px;
-    top: 2px;
-    font-size: 11px;
+    display: flex;
+    font-size: 14px;
     text-decoration: line-through;
     color: #626366;
 }
 
 .steam-price-current {
-    padding-left: 8px;
-    padding-top: 13px;
-    padding-right: 6px;
+    display: flex;
     font-size: 14px;
     color: #acdbf5;
 }

@@ -12,11 +12,29 @@
         }
         
         let expectedName = nameElement.textContent
+        let steam = element.insertBefore(el("a", steam => {
+            steam.className = "steam"
+            steam.href = "https://store.steampowered.com/search?term=" + encodeURIComponent(expectedName)
+            steam.target = "blank"
+            steam.innerHTML = "Loading Steam info..."
+        }), flavorElement)
         chrome.runtime.sendMessage({ type: "search", name: expectedName }, function(response) {
-            if (!response.url) return
+            if (!response.url) {
+                steam.innerHTML = 'Steam: No results'
+                return
+            }
+                
+            // Discount debug for when there's no discounted game in any bundle
+            // if (Math.random() > 0.5) {
+            //     response.discount = '-30%'
+            //     response.originalPriceDisplay = '20.99'
+            // }
 
+            steam.href = response.url
+            steam.innerHTML = ''
+            
             if (expectedName !== response.title) {
-                element.appendChild(el("a", name => {
+                steam.appendChild(el("a", name => {
                     name.className = "steam-name"
                     name.href = "https://store.steampowered.com/search?term=" + encodeURIComponent(expectedName)
                     name.target = "blank"
@@ -24,38 +42,34 @@
                 }))
             }
 
-            element.appendChild(el("a", steam => {
-                steam.className = "steam"
-                steam.href = response.url
-                steam.target = "blank"
+            steam.appendChild(el("div", priceRow => {
+                priceRow.className = 'steam-price-row'
 
+                priceRow.appendChild(el("div", current => {
+                    current.className = "steam-price-current"
+                    if (response.priceDisplay !== "") {
+                        current.innerHTML = response.priceDisplay
+                    } else {
+                        current.innerHTML = "Not released yet"
+                    }
+                    if (response.owned) {
+                        current.innerHTML += " (Owned)"
+                    }
+                }))
+
+                if (response.originalPriceDisplay) {
+                    priceRow.appendChild(el("div", original => {
+                        original.className = "steam-price-original"
+                        original.innerHTML = response.originalPriceDisplay
+                    }))
+                }
+                
                 if (!!response.discount) {
-                    steam.appendChild(el("div", discount => {
+                    priceRow.appendChild(el("div", discount => {
                         discount.className = "steam-discount"
                         discount.innerHTML = response.discount
                     }))
                 }
-
-                steam.appendChild(el("div", price => {
-                    price.className = "steam-price"
-                    if (response.originalPriceDisplay) {
-                        price.appendChild(el("div", original => {
-                            original.className = "steam-price-original"
-                            original.innerHTML = response.originalPriceDisplay
-                        }))
-                    }
-                    price.appendChild(el("div", current => {
-                        current.className = "steam-price-current"
-                        if (response.priceDisplay !== "") {
-                            current.innerHTML = response.priceDisplay
-                        } else {
-                            current.innerHTML = "Not released yet"
-                        }
-                        if (response.owned) {
-                            current.innerHTML += " (Owned)"
-                        }
-                    }))
-                }))
             }))
         })
     }
