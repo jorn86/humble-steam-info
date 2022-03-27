@@ -4,9 +4,14 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "content_scripts": [{
-    "matches": ["https://*.humblebundle.com/games/*"],
+    "matches": ["https://*.humblebundle.com/games/*", "https://*.humblebundle.com/*bundle"],
     "run_at": "document_idle",
-    "js": ["humble.js"],
+    "js": ["humble.js", "humble-games.js"],
+    "css": ["humble.css"]
+  }, {
+    "matches": ["https://*.humblebundle.com/home/keys*"],
+    "run_at": "document_idle",
+    "js": ["humble.js", "humble-keys.js"],
     "css": ["humble.css"]
   }, {
     "matches": ["https://store.steampowered.com/search/*"],

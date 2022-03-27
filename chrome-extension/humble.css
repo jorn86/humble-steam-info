@@ -1,11 +1,12 @@
 .steam {
     display: flex;
+    max-width: 250px;
     flex-flow: column nowrap;
     justify-content: space-between;
     vertical-align: middle;
     position: relative;
     font-size: 14px;
-    color: #c7d5e0;
+    color: #c7d5e0 !important; /* no humble, you can't override this */
     background-color: black;
     margin: 4px 0;
     padding: 2px;
@@ -18,7 +19,7 @@
     display: flex;
     font-size: 14px;
     margin: 2px;
-    color: #c7d5e0;
+    color: #c7d5e0 !important; /* no humble, you can't override this */
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;

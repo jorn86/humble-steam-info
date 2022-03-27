@@ -32,7 +32,7 @@ function search(name) {
         url: element.getAttribute("href"),
         priceDisplay: price,
         originalPriceDisplay: originalPriceElement ? originalPriceElement.textContent : "",
-        discount: discountElement.getElementsByClassName("search_discount").textContent,
+        discount: discountElement.getElementsByClassName("search_discount")[0].textContent,
         owned: owned,
     }
 }
